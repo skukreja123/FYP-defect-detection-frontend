@@ -1,0 +1,211 @@
+import React, { useRef, useState, useEffect } from "react";
+import axios from "axios";
+
+const CameraCapture = () => {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [predictions, setPredictions] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+
+  const startCamera = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        videoRef.current.srcObject = stream;
+      })
+      .catch((err) => {
+        console.error("Error accessing the camera", err);
+        alert("Unable to access the camera. Please check permissions.");
+      });
+  };
+
+  const captureImage = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+    const imageData = canvas.toDataURL("image/png");
+    setCapturedImage(imageData);
+    sendImageToBackend(imageData);
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUploadedImage(reader.result);
+        sendImageToBackend(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const sendImageToBackend = (imageData) => {
+    setIsLoading(true);
+    axios
+      .post("http://localhost:5000/image/predict_image", { image: imageData })
+      .then((response) => {
+        setPredictions(response.data);
+      })
+      .catch((error) => {
+        console.error("Error predicting image", error);
+        alert("Error predicting the image. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>Defect Detection System</h1>
+
+      {/* Camera Section */}
+      <div style={styles.section}>
+        <button onClick={startCamera} style={styles.button}>
+          Start Camera
+        </button>
+        <div style={styles.videoContainer}>
+          <video ref={videoRef} width="640" height="480" autoPlay style={styles.video} />
+        </div>
+        <button onClick={captureImage} disabled={isLoading} style={styles.button}>
+          {isLoading ? "Processing..." : "Capture Image"}
+        </button>
+      </div>
+
+      <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
+
+      {/* Upload Section */}
+      <div style={styles.section}>
+        <h2 style={styles.subtitle}>Or Upload an Image</h2>
+        <input type="file" accept="image/*" onChange={handleImageUpload} disabled={isLoading} />
+        {uploadedImage && (
+          <div style={styles.imagePreview}>
+            <h3 style={styles.previewTitle}>Uploaded Image:</h3>
+            <img src={uploadedImage} alt="Uploaded Preview" style={styles.image} />
+          </div>
+        )}
+      </div>
+
+      {/* Predictions */}
+      {Object.keys(predictions).length > 0 && (
+        <div style={styles.predictionContainer}>
+          <h2 style={styles.predictionTitle}>Prediction Results:</h2>
+
+          {/* Show image */}
+          <img
+            src={uploadedImage || capturedImage}
+            alt="Prediction Preview"
+            style={styles.predictionImage}
+          />
+
+          {/* Show model predictions */}
+          <div style={styles.predictionCards}>
+            {Object.entries(predictions).map(([modelKey, data]) => (
+              <div key={modelKey} style={styles.card}>
+                <h3>{modelKey}</h3>
+                <p><strong>Label:</strong> {data.label}</p>
+                <p><strong>Confidence:</strong> {data.confidence.toFixed(2)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CameraCapture;
+
+const styles = {
+  container: {
+    fontFamily: "'Arial', sans-serif",
+    textAlign: "center",
+    padding: "20px",
+    backgroundColor: "#f8f9fa",
+    minHeight: "100vh",
+  },
+  title: {
+    color: "#343a40",
+    marginBottom: "20px",
+  },
+  section: {
+    marginBottom: "30px",
+  },
+  button: {
+    padding: "10px 20px",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
+  videoContainer: {
+    margin: "20px auto",
+    width: "640px",
+    height: "480px",
+    border: "2px solid #007bff",
+    borderRadius: "5px",
+    overflow: "hidden",
+  },
+  video: {
+    width: "100%",
+    height: "100%",
+  },
+  subtitle: {
+    color: "#495057",
+  },
+  imagePreview: {
+    marginTop: "20px",
+  },
+  previewTitle: {
+    color: "#495057",
+  },
+  image: {
+    maxWidth: "320px",
+    borderRadius: "5px",
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+  },
+  predictionContainer: {
+    marginTop: "30px",
+    padding: "20px",
+    borderRadius: "10px",
+    backgroundColor: "#ffffff",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  },
+  predictionTitle: {
+    color: "#007bff",
+    marginBottom: "20px",
+  },
+  predictionImage: {
+    maxWidth: "320px",
+    borderRadius: "10px",
+    marginBottom: "20px",
+  },
+  predictionCards: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    flexWrap: "wrap",
+  },
+  card: {
+    backgroundColor: "#f1f3f5",
+    padding: "15px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+    minWidth: "180px",
+    textAlign: "left",
+  },
+};

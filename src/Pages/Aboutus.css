@@ -1,0 +1,86 @@
+.about-wrapper {
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    padding: 60px 30px;
+    font-family: "Segoe UI", sans-serif;
+    text-align: center;
+  }
+  
+  .about-block {
+    margin-bottom: 60px;
+  }
+  
+  .about-block h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .about-block p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .timeline {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .timeline li {
+    font-size: 1rem;
+    color: #444;
+    margin: 10px 0;
+  }
+  
+  .team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+  
+  .team-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 180px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .team-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .team-card h4 {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: #222;
+  }
+  
+  .team-card p {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .about-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .about-button:hover {
+    background-color: #0056b3;
+  }
+  
