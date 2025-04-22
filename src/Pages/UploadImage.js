@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
+import "./UploadImage.css"; // Assuming you have a CSS file for styles
 
 const CameraCapture = () => {
   const videoRef = useRef(null);
@@ -135,10 +136,13 @@ const styles = {
     padding: "20px",
     backgroundColor: "#f8f9fa",
     minHeight: "100vh",
+    maxWidth: "1200px",
+    margin: "0 auto",
   },
   title: {
     color: "#343a40",
     marginBottom: "20px",
+    fontSize: "2rem",
   },
   section: {
     marginBottom: "30px",
@@ -151,11 +155,14 @@ const styles = {
     borderRadius: "5px",
     cursor: "pointer",
     fontSize: "16px",
+    margin: "10px",
+    transition: "background 0.3s",
   },
   videoContainer: {
     margin: "20px auto",
-    width: "640px",
-    height: "480px",
+    width: "100%",
+    maxWidth: "640px",
+    aspectRatio: "4 / 3",
     border: "2px solid #007bff",
     borderRadius: "5px",
     overflow: "hidden",
@@ -163,17 +170,22 @@ const styles = {
   video: {
     width: "100%",
     height: "100%",
+    objectFit: "cover",
   },
   subtitle: {
     color: "#495057",
+    fontSize: "1.25rem",
   },
   imagePreview: {
     marginTop: "20px",
   },
   previewTitle: {
     color: "#495057",
+    fontWeight: "bold",
+    marginBottom: "10px",
   },
   image: {
+    width: "100%",
     maxWidth: "320px",
     borderRadius: "5px",
     boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
@@ -188,8 +200,10 @@ const styles = {
   predictionTitle: {
     color: "#007bff",
     marginBottom: "20px",
+    fontSize: "1.5rem",
   },
   predictionImage: {
+    width: "100%",
     maxWidth: "320px",
     borderRadius: "10px",
     marginBottom: "20px",
@@ -206,6 +220,9 @@ const styles = {
     borderRadius: "8px",
     boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
     minWidth: "180px",
+    maxWidth: "300px",
     textAlign: "left",
+    flex: "1 1 200px",
   },
 };
+

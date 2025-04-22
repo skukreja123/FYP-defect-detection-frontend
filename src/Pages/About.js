@@ -128,7 +128,6 @@ const styles = {
     border: "none",
     borderRadius: "25px",
     cursor: "pointer",
-    boxShadow: "0 4px 10px rgba(0, 123, 255, 0.3)",
   },
 };
 

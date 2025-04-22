@@ -6,6 +6,8 @@
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-family: "Poppins", sans-serif;
+  position: relative;
+  z-index: 100;
 }
 
 .logo {
@@ -14,27 +16,25 @@
   color: #333;
 }
 
+/* Nav links */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
 }
 
-.nav-links li {
-  display: inline;
-}
-
-.nav-links a {
+.nav-links li a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
   transition: color 0.3s ease-in-out;
 }
 
-.nav-links a:hover {
+.nav-links li a:hover {
   color: #6e8efb;
 }
 
+/* Auth buttons */
 .auth-buttons {
   display: flex;
   gap: 15px;
@@ -43,28 +43,71 @@
 .signup-btn,
 .login-btn {
   padding: 8px 18px;
-  border: none;
+  border: 1px solid #6e8efb;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease-in-out;
-}
-
-.signup-btn {
   background-color: transparent;
-  border: 1px solid #6e8efb;
   color: #6e8efb;
 }
 
-.signup-btn:hover {
+.signup-btn:hover,
+.login-btn:hover {
   background-color: #6e8efb;
   color: white;
 }
 
-.login-btn {
-  color: white;
+.login-btn:active {
+  background-color: #5671e7;
 }
 
-.login-btn:hover {
-  background-color: #5671e7;
+/* Toggle button (hamburger) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.nav-toggle span {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  transition: 0.3s;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links,
+  .auth-buttons {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #ffffff;
+    align-items: center;
+    padding: 20px 0;
+    display: none;
+    gap: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links.active,
+  .auth-buttons.active {
+    display: flex;
+  }
+
+  .nav-links {
+    flex-direction: column;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+  }
 }

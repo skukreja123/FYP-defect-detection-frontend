@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
+import "./UploadVideo.css"; // Assuming you have a CSS file for styles
 
 const VideoCapture = () => {
   const videoRef = useRef(null);
@@ -145,16 +146,67 @@ const VideoCapture = () => {
 };
 
 const styles = {
-  container: { textAlign: "center", padding: "20px" },
-  title: { fontSize: "2rem", fontWeight: "bold" },
-  section: { marginBottom: "20px" },
-  button: { padding: "10px 20px", fontSize: "16px", cursor: "pointer", margin: "10px" },
-  videoContainer: { margin: "20px auto", border: "2px solid #ccc" },
-  video: { maxWidth: "100%" },
-  subtitle: { fontSize: "1.2rem", fontWeight: "bold" },
-  videoPreview: { marginTop: "20px" },
-  predictionContainer: { marginTop: "20px", textAlign: "left" },
-  image: { width: "200px", height: "150px" }
+  container: {
+    textAlign: "center",
+    padding: "20px",
+    maxWidth: "1000px",
+    margin: "0 auto",
+  },
+  title: {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  section: {
+    marginBottom: "30px",
+  },
+  button: {
+    padding: "10px 20px",
+    fontSize: "16px",
+    cursor: "pointer",
+    margin: "10px",
+    borderRadius: "6px",
+    border: "none",
+    backgroundColor: "#6e8efb",
+    color: "white",
+    transition: "0.3s",
+  },
+  videoContainer: {
+    margin: "20px auto",
+    border: "2px solid #ccc",
+    borderRadius: "8px",
+    overflow: "hidden",
+    maxWidth: "100%",
+    width: "640px",
+  },
+  video: {
+    width: "100%",
+    height: "auto",
+  },
+  subtitle: {
+    fontSize: "1.2rem",
+    fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  videoPreview: {
+    marginTop: "20px",
+  },
+  predictionContainer: {
+    marginTop: "20px",
+    textAlign: "left",
+    padding: "10px",
+    backgroundColor: "#f9f9f9",
+    borderRadius: "8px",
+    overflowX: "auto",
+  },
+  image: {
+    width: "100%",
+    maxWidth: "300px",
+    height: "auto",
+    borderRadius: "4px",
+    margin: "10px 0",
+  },
 };
+
 
 export default VideoCapture;

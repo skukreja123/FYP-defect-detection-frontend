@@ -60,12 +60,10 @@
     padding: 12px;
     font-size: 16px;
     font-weight: bold;
-    background: #6a11cb;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
   }
   
   button:hover {

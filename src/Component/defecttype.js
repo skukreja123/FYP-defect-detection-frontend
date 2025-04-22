@@ -74,7 +74,6 @@ const DefectTypes = () => {
 const styles = {
   container: {
     padding: "60px 30px",
-    background: "linear-gradient(to right, #eef2f3, #8e9eab)",
     textAlign: "center",
   },
   heading: {

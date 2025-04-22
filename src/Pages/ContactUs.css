@@ -1,9 +1,5 @@
 /* ContactUs.css */
 
-body {
-  background: linear-gradient(to right, #6a11cb, #2575fc);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
 .contact-wrapper {
   display: flex;
@@ -74,8 +70,7 @@ textarea {
 }
 
 button {
-  background-color: #2575fc;
-  color: white;
+  color: black;
   padding: 12px;
   border: none;
   border-radius: 8px;

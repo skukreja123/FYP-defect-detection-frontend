@@ -1,0 +1,27 @@
+@media (max-width: 768px) {
+    video {
+      width: 100% !important;
+      height: auto !important;
+    }
+  
+    input[type="file"] {
+      max-width: 100%;
+    }
+  
+    .videoPreview video,
+    .videoContainer video {
+      width: 100%;
+      height: auto;
+    }
+  
+    .predictionContainer {
+      font-size: 14px;
+    }
+  
+    button {
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+    }
+  }
+  

@@ -1,0 +1,17 @@
+@media (max-width: 768px) {
+    video, canvas, img {
+      width: 100% !important;
+      height: auto !important;
+    }
+  
+    input[type="file"] {
+      max-width: 100%;
+    }
+  
+    button {
+      width: 100%;
+      max-width: 300px;
+      margin: 10px auto;
+    }
+  }
+  
