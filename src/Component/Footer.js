@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-social">
-          <h3 className="footer-logo">MyCompany</h3>
+          <h3 className="footer-logo">FDD</h3>
           <p>Designing the future, one pixel at a time.</p>
           <div className="social-icons">
             <FaFacebookF />
