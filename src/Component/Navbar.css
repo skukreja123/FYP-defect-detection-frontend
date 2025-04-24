@@ -125,3 +125,17 @@
     text-align: center;
   }
 }
+
+/* Desktop nav - visible by default */
+.nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Hide desktop menu in mobile view */
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none;
+  }
+}

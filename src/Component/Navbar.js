@@ -6,33 +6,49 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="navbar">
-      <div className="logo">FDD</div>
+<nav className="navbar">
+  <div className="logo">FDD</div>
 
-      <div
-        className={`nav-toggle ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+  <div
+    className={`nav-toggle ${menuOpen ? "open" : ""}`}
+    onClick={() => setMenuOpen(!menuOpen)}
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-      <div className={`mobile-menu ${menuOpen ? "active" : ""}`}>
-        <ul className="nav-links">
-          <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
-          <li><Link to="/About" onClick={() => setMenuOpen(false)}>About</Link></li>
-          <li><Link to="/Contact" onClick={() => setMenuOpen(false)}>Contact</Link></li>
-          <li><Link to="/upload" onClick={() => setMenuOpen(false)}>Upload</Link></li>
-          <li><Link to="/Video" onClick={() => setMenuOpen(false)}>RealTime</Link></li>
-        </ul>
+  {/* Desktop Menu */}
+  <div className="nav-desktop">
+    <ul className="nav-links">
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/About">About</Link></li>
+      <li><Link to="/Contact">Contact</Link></li>
+      <li><Link to="/upload">Upload</Link></li>
+      <li><Link to="/Video">RealTime</Link></li>
+    </ul>
+    <div className="auth-buttons">
+      <button className="signup-btn"><Link to="/signup">Sign Up</Link></button>
+      <button className="login-btn"><Link to="/login">Login</Link></button>
+    </div>
+  </div>
 
-        <div className="auth-buttons">
-          <button className="signup-btn" onClick={() => setMenuOpen(false)}><Link to="/signup">Sign Up</Link></button>
-          <button className="login-btn" onClick={() => setMenuOpen(false)}><Link to="/login">Login</Link></button>
-        </div>
-      </div>
-    </nav>
+  {/* Mobile Menu */}
+  <div className={`mobile-menu ${menuOpen ? "active" : ""}`}>
+    <ul className="nav-links">
+      <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
+      <li><Link to="/About" onClick={() => setMenuOpen(false)}>About</Link></li>
+      <li><Link to="/Contact" onClick={() => setMenuOpen(false)}>Contact</Link></li>
+      <li><Link to="/upload" onClick={() => setMenuOpen(false)}>Upload</Link></li>
+      <li><Link to="/Video" onClick={() => setMenuOpen(false)}>RealTime</Link></li>
+    </ul>
+    <div className="auth-buttons">
+      <button className="signup-btn" onClick={() => setMenuOpen(false)}><Link to="/signup">Sign Up</Link></button>
+      <button className="login-btn" onClick={() => setMenuOpen(false)}><Link to="/login">Login</Link></button>
+    </div>
+  </div>
+</nav>
+
   );
 }
 
