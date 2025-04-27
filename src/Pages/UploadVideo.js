@@ -13,17 +13,21 @@ const VideoCapture = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const startCamera = () => {
+    // Requesting the back camera using facingMode: "environment"
     navigator.mediaDevices
-      .getUserMedia({ video: true })
+      .getUserMedia({
+        video: {
+          facingMode: { exact: "environment" }, // Request the back camera
+        },
+      })
       .then((stream) => {
         videoRef.current.srcObject = stream;
       })
       .catch((err) => {
-        console.error("Error accessing camera", err);
-        alert("Unable to access camera. Please check permissions.");
+        console.error("Error accessing the camera", err);
+        alert("Unable to access the camera. Please check permissions.");
       });
   };
-
   const startRecording = () => {
     if (!videoRef.current.srcObject) {
       alert("Start the camera first!");
