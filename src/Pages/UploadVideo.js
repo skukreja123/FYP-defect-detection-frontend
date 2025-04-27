@@ -68,7 +68,7 @@ const VideoCapture = () => {
     formData.append("video", videoFile);
 
     axios
-      .post("http://localhost:5000/video/predict_video", formData, {
+      .post(" https://specialized-rice-ka-timing.trycloudflare.com/video/predict_video", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {

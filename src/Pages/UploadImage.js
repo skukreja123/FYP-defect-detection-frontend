@@ -47,7 +47,7 @@ const CameraCapture = () => {
   const sendImageToBackend = (imageData) => {
     setIsLoading(true);
     axios
-      .post("http://localhost:5000/image/predict_image", { image: imageData })
+      .post(" https://specialized-rice-ka-timing.trycloudflare.com/image/predict_image", { image: imageData })
       .then((response) => {
         setPredictions(response.data);
       })
