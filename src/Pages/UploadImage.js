@@ -11,8 +11,13 @@ const CameraCapture = () => {
   const [capturedImage, setCapturedImage] = useState(null);
 
   const startCamera = () => {
+    // Requesting the back camera using facingMode: "environment"
     navigator.mediaDevices
-      .getUserMedia({ video: true })
+      .getUserMedia({
+        video: {
+          facingMode: { exact: "environment" }, // Request the back camera
+        },
+      })
       .then((stream) => {
         videoRef.current.srcObject = stream;
       })
@@ -47,7 +52,7 @@ const CameraCapture = () => {
   const sendImageToBackend = (imageData) => {
     setIsLoading(true);
     axios
-      .post(" https://specialized-rice-ka-timing.trycloudflare.com/image/predict_image", { image: imageData })
+      .post("https://specialized-rice-ka-timing.trycloudflare.com/image/predict_image", { image: imageData })
       .then((response) => {
         setPredictions(response.data);
       })
@@ -225,4 +230,3 @@ const styles = {
     flex: "1 1 200px",
   },
 };
-
