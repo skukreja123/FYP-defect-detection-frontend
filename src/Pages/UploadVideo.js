@@ -1,33 +1,68 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import "./UploadVideo.css"; // Assuming you have a CSS file for styles
+import "./UploadVideo.css";
 
 const VideoCapture = () => {
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const mediaRecorderRef = useRef(null);
+
+  const [isCameraOn, setIsCameraOn] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [videoChunks, setVideoChunks] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState(null);
   const [capturedVideo, setCapturedVideo] = useState(null);
   const [predictions, setPredictions] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [mode, setMode] = useState("realtime"); // 'realtime' or 'upload'
 
   const startCamera = () => {
-    // Requesting the back camera using facingMode: "environment"
     navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          facingMode: { exact: "environment" }, // Request the back camera
-        },
-      })
+      .getUserMedia({ video: { facingMode: { exact: "environment" } } })
       .then((stream) => {
         videoRef.current.srcObject = stream;
+        setIsCameraOn(true);
+        setMode("realtime");
       })
       .catch((err) => {
         console.error("Error accessing the camera", err);
         alert("Unable to access the camera. Please check permissions.");
       });
   };
+
+  const captureAndSendFrame = async () => {
+    if (!videoRef.current || !canvasRef.current || mode !== "realtime") return;
+
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+
+    canvasRef.current.toBlob(async (blob) => {
+      if (!blob) return;
+
+      const formData = new FormData();
+      formData.append("frame", blob, "frame.jpg");
+
+      try {
+        const response = await axios.post("http://127.0.0.1:5000/video/predict_frame", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.data.label) {
+          setPredictions((prev) => [
+            {
+              label: response.data.label,
+              confidence: response.data.confidence,
+              image: response.data.frame,
+            },
+            ...prev.slice(0, 10), // Show only latest 10 predictions
+          ]);
+        }
+      } catch (error) {
+        console.error("Error predicting frame", error);
+      }
+    }, "image/jpeg");
+  };
+
   const startRecording = () => {
     if (!videoRef.current.srcObject) {
       alert("Start the camera first!");
@@ -42,6 +77,7 @@ const VideoCapture = () => {
     };
     recorder.start();
     setIsRecording(true);
+    setMode("upload");
   };
 
   const stopRecording = () => {
@@ -63,6 +99,7 @@ const VideoCapture = () => {
     if (file) {
       setUploadedVideo(URL.createObjectURL(file));
       sendVideoToBackend(file);
+      setMode("upload");
     }
   };
 
@@ -72,7 +109,7 @@ const VideoCapture = () => {
     formData.append("video", videoFile);
 
     axios
-      .post(" https://specialized-rice-ka-timing.trycloudflare.com/video/predict_video", formData, {
+      .post("https://cook-barrel-tired-winner.trycloudflare.com/video/predict_video", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
@@ -94,6 +131,16 @@ const VideoCapture = () => {
   };
 
   useEffect(() => {
+    let intervalId;
+
+    if (isCameraOn && mode === "realtime") {
+      intervalId = setInterval(captureAndSendFrame, 1000); // Capture frame every 1 second
+    }
+
+    return () => clearInterval(intervalId);
+  }, [isCameraOn, mode]);
+
+  useEffect(() => {
     return () => {
       if (videoRef.current?.srcObject) {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
@@ -103,12 +150,13 @@ const VideoCapture = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Defect Detection System (Video)</h1>
+      <h1 style={styles.title}>Defect Detection System</h1>
 
       <div style={styles.section}>
-        <button onClick={startCamera} style={styles.button}>Start Camera</button>
+        <button onClick={startCamera} style={styles.button}>Start Camera (Real-Time)</button>
         <div style={styles.videoContainer}>
-          <video ref={videoRef} width="640" height="480" autoPlay style={styles.video} />
+          <video ref={videoRef} width="640" height="480" autoPlay muted style={styles.video} />
+          <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
         </div>
         {isRecording ? (
           <button onClick={stopRecording} style={{ ...styles.button, backgroundColor: "red" }}>
@@ -126,15 +174,16 @@ const VideoCapture = () => {
 
       {(capturedVideo || uploadedVideo) && (
         <div style={styles.videoPreview}>
-          <h3>Preview:</h3>
+          <h3>Video Preview:</h3>
           <video src={capturedVideo || uploadedVideo} controls width="640" height="480" />
         </div>
       )}
 
       {isProcessing && <p>Processing video...</p>}
+
       {predictions.length > 0 && (
         <div style={styles.predictionContainer}>
-          <h2>Defects Detected:</h2>
+          <h2>Predictions:</h2>
           <ul>
             {predictions.map((prediction, index) => (
               <li key={index}>
@@ -211,6 +260,5 @@ const styles = {
     margin: "10px 0",
   },
 };
-
 
 export default VideoCapture;

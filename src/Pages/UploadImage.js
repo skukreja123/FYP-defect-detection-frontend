@@ -52,7 +52,8 @@ const CameraCapture = () => {
   const sendImageToBackend = (imageData) => {
     setIsLoading(true);
     axios
-      .post("https://specialized-rice-ka-timing.trycloudflare.com/image/predict_image", { image: imageData })
+    
+      .post("https://cook-barrel-tired-winner.trycloudflare.com/image/predict_image", { image: imageData })
       .then((response) => {
         setPredictions(response.data);
       })
@@ -121,7 +122,7 @@ const CameraCapture = () => {
             {Object.entries(predictions).map(([modelKey, data]) => (
               <div key={modelKey} style={styles.card}>
                 <h3>{modelKey}</h3>
-                <p><strong>Label:</strong> {data.label}</p>
+                <p><strong>Defect:</strong> {data.label}</p>
                 <p><strong>Confidence:</strong> {data.confidence.toFixed(2)}</p>
               </div>
             ))}
