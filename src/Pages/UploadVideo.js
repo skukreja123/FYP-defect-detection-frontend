@@ -43,7 +43,7 @@ const VideoCapture = () => {
       formData.append("frame", blob, "frame.jpg");
 
       try {
-        const response = await axios.post("http://127.0.0.1:5000/video/predict_frame", formData, {
+        const response = await axios.post("https://cook-barrel-tired-winner.trycloudflare.com/video/predict_frame", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
