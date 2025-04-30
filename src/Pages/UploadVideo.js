@@ -43,7 +43,7 @@ const VideoCapture = () => {
       formData.append("frame", blob, "frame.jpg");
 
       try {
-        const response = await axios.post("https://cook-barrel-tired-winner.trycloudflare.com/video/predict_frame", formData, {
+        const response = await axios.post("https://stockings-springer-seo-griffin.trycloudflare.com/video/predict_frame", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
@@ -109,7 +109,7 @@ const VideoCapture = () => {
     formData.append("video", videoFile);
 
     axios
-      .post("https://cook-barrel-tired-winner.trycloudflare.com/video/predict_video", formData, {
+      .post("https://stockings-springer-seo-griffin.trycloudflare.com/video/predict_video", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {

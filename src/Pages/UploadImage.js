@@ -53,7 +53,7 @@ const CameraCapture = () => {
     setIsLoading(true);
     axios
     
-      .post("https://cook-barrel-tired-winner.trycloudflare.com/image/predict_image", { image: imageData })
+      .post("https://stockings-springer-seo-griffin.trycloudflare.com/image/predict_image", { image: imageData })
       .then((response) => {
         setPredictions(response.data);
       })
