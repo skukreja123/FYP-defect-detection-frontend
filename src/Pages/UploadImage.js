@@ -9,6 +9,8 @@ const CameraCapture = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
 
   const startCamera = () => {
     // Requesting the back camera using facingMode: "environment"
@@ -49,11 +51,25 @@ const CameraCapture = () => {
     }
   };
 
+ 
+
   const sendImageToBackend = (imageData) => {
     setIsLoading(true);
+    setUploadProgress(0);
+  
     axios
-    
-      .post("https://stockings-springer-seo-griffin.trycloudflare.com/image/predict_image", { image: imageData })
+      .post(
+        " https://how-shareware-australian-streams.trycloudflare.com/image/predict_image",
+        { image: imageData },
+        {
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              setUploadProgress(percentCompleted);
+            }
+          },
+        }
+      )
       .then((response) => {
         setPredictions(response.data);
       })
@@ -63,8 +79,10 @@ const CameraCapture = () => {
       })
       .finally(() => {
         setIsLoading(false);
+        setUploadProgress(0);
       });
   };
+  
 
   useEffect(() => {
     return () => {
@@ -77,6 +95,18 @@ const CameraCapture = () => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Defect Detection System</h1>
+      {isLoading && (
+  <div className="spinner-overlay">
+    <div>
+      <div className="spinner"></div>
+      {uploadProgress > 0 && (
+        <div className="progress-bar">
+          <div className="progress-bar-fill" style={{ width: `${uploadProgress}%` }}></div>
+        </div>
+      )}
+    </div>
+  </div>
+)}
 
       {/* Camera Section */}
       <div style={styles.section}>
@@ -230,4 +260,5 @@ const styles = {
     textAlign: "left",
     flex: "1 1 200px",
   },
+  
 };

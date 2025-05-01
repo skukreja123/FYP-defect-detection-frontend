@@ -43,7 +43,7 @@ const VideoCapture = () => {
       formData.append("frame", blob, "frame.jpg");
 
       try {
-        const response = await axios.post("https://stockings-springer-seo-griffin.trycloudflare.com/video/predict_frame", formData, {
+        const response = await axios.post(" https://how-shareware-australian-streams.trycloudflare.com/video/predict_frame", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
@@ -84,23 +84,27 @@ const VideoCapture = () => {
     if (!mediaRecorderRef.current) return;
     mediaRecorderRef.current.stop();
     setIsRecording(false);
-
-    setTimeout(() => {
+  
+    mediaRecorderRef.current.onstop = () => {
       const blob = new Blob(videoChunks, { type: "video/webm" });
       const videoURL = URL.createObjectURL(blob);
       setCapturedVideo(videoURL);
+      setUploadedVideo(null);
       sendVideoToBackend(blob);
       setVideoChunks([]);
-    }, 1000);
+    };
   };
 
   const handleVideoUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      setUploadedVideo(URL.createObjectURL(file));
-      sendVideoToBackend(file);
-      setMode("upload");
-    }
+    if (!file) return;
+  
+    // Reset previous states
+    setCapturedVideo(null);
+    setPredictions([]);
+    setUploadedVideo(URL.createObjectURL(file));
+    sendVideoToBackend(file);
+    setMode("upload");
   };
 
   const sendVideoToBackend = (videoFile) => {
@@ -109,7 +113,7 @@ const VideoCapture = () => {
     formData.append("video", videoFile);
 
     axios
-      .post("https://stockings-springer-seo-griffin.trycloudflare.com/video/predict_video", formData, {
+      .post(" https://how-shareware-australian-streams.trycloudflare.com/video/predict_video", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
@@ -151,6 +155,42 @@ const VideoCapture = () => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Defect Detection System</h1>
+      
+      <div style={{ marginBottom: "20px" }}>
+  <button
+    onClick={() => {
+      setMode("realtime");
+      setCapturedVideo(null);
+      setUploadedVideo(null);
+      setPredictions([]);
+    }}
+    style={{
+      ...styles.button,
+      backgroundColor: mode === "realtime" ? "#6e8efb" : "#ccc",
+    }}
+  >
+    Real-Time Mode
+  </button>
+  <button
+    onClick={() => {
+      setMode("upload");
+      setIsCameraOn(false);
+      if (videoRef.current?.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      setCapturedVideo(null);
+      setPredictions([]);
+    }}
+    style={{
+      ...styles.button,
+      backgroundColor: mode === "upload" ? "#6e8efb" : "#ccc",
+    }}
+  >
+    Upload Mode
+  </button>
+</div>
+
 
       <div style={styles.section}>
         <button onClick={startCamera} style={styles.button}>Start Camera (Real-Time)</button>
@@ -179,7 +219,12 @@ const VideoCapture = () => {
         </div>
       )}
 
-      {isProcessing && <p>Processing video...</p>}
+{isProcessing && (
+  <div style={{ color: "#333", fontWeight: "bold", marginTop: "20px" }}>
+    🔄 Processing video, please wait...
+  </div>
+)}
+
 
       {predictions.length > 0 && (
         <div style={styles.predictionContainer}>
@@ -251,6 +296,9 @@ const styles = {
     backgroundColor: "#f9f9f9",
     borderRadius: "8px",
     overflowX: "auto",
+    maxHeight: "400px",
+overflowY: "auto",
+
   },
   image: {
     width: "100%",

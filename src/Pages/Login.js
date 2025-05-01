@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("https://stockings-springer-seo-griffin.trycloudflare.com/auth/signin", {
+      const res = await axios.post(" https://how-shareware-australian-streams.trycloudflare.com/auth/signin", {
         email,
         password
       });

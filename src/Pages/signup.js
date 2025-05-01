@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post("https://stockings-springer-seo-griffin.trycloudflare.com/auth/signup", {
+      const res = await axios.post(" https://how-shareware-australian-streams.trycloudflare.com/auth/signup", {
         email,
         password
       });
