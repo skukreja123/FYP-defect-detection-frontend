@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './ContactUs.css';
 
-const ContactUs = () => {
+const ContactUs =  () => {
   const [form, setForm] = useState({
     name: '',
     email: '',

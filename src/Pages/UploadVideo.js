@@ -14,6 +14,8 @@ const VideoCapture = () => {
   const [capturedVideo, setCapturedVideo] = useState(null);
   const [predictions, setPredictions] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+
   const [mode, setMode] = useState("realtime"); // 'realtime' or 'upload'
 
   const startCamera = () => {
@@ -22,6 +24,7 @@ const VideoCapture = () => {
       .then((stream) => {
         videoRef.current.srcObject = stream;
         setIsCameraOn(true);
+        setIsStreaming(true); 
         setMode("realtime");
       })
       .catch((err) => {
@@ -31,6 +34,7 @@ const VideoCapture = () => {
           .then((stream) => {
             videoRef.current.srcObject = stream;
             setIsCameraOn(true);
+            setIsStreaming(true); 
             setMode("realtime");
           })
           .catch((err) => {
@@ -41,27 +45,39 @@ const VideoCapture = () => {
   };
   
 
+  const stopRealtime = () => {
+    setIsStreaming(false); // Stop sending frames
+    setIsCameraOn(false);
+    if (videoRef.current?.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
+  
   
 
-  const captureAndSendFrame = async () => {
-    if (!videoRef.current || !canvasRef.current || mode !== "realtime") return;
 
+
+  const captureAndSendFrame = async () => {
+    if (!videoRef.current || !canvasRef.current || mode !== "realtime" || !isStreaming) return;
+  
     const ctx = canvasRef.current.getContext("2d");
     ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-
+  
     canvasRef.current.toBlob(async (blob) => {
       if (!blob) return;
-
+  
       const formData = new FormData();
       formData.append("frame", blob, "frame.jpg");
-
+  
       try {
-        const response = await axios.post(" http://localhost:5000/video/predict_frame", formData, {
-          headers: { "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token in the headers
-           },
+        const response = await axios.post("http://localhost:5000/video/predict_frame", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
-
+  
         if (response.data.label) {
           setPredictions((prev) => [
             {
@@ -69,7 +85,7 @@ const VideoCapture = () => {
               confidence: response.data.confidence,
               image: response.data.frame,
             },
-            ...prev.slice(0, 10), // Show only latest 10 predictions
+            ...prev.slice(0, 10),
           ]);
         }
       } catch (error) {
@@ -77,38 +93,38 @@ const VideoCapture = () => {
       }
     }, "image/jpeg");
   };
-
-  const startRecording = () => {
-    if (!videoRef.current.srcObject) {
-      alert("Start the camera first!");
-      return;
-    }
-    const recorder = new MediaRecorder(videoRef.current.srcObject, { mimeType: "video/webm" });
-    mediaRecorderRef.current = recorder;
-    recorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        setVideoChunks((prev) => [...prev, event.data]);
-      }
-    };
-    recorder.start();
-    setIsRecording(true);
-    setMode("upload");
-  };
-
-  const stopRecording = () => {
-    if (!mediaRecorderRef.current) return;
-    mediaRecorderRef.current.stop();
-    setIsRecording(false);
   
-    mediaRecorderRef.current.onstop = () => {
-      const blob = new Blob(videoChunks, { type: "video/webm" });
-      const videoURL = URL.createObjectURL(blob);
-      setCapturedVideo(videoURL);
-      setUploadedVideo(null);
-      sendVideoToBackend(blob);
-      setVideoChunks([]);
-    };
-  };
+
+  // const startRecording = () => {
+  //   if (!videoRef.current.srcObject) {
+  //     alert("Start the camera first!");
+  //     return;
+  //   }
+  //   const recorder = new MediaRecorder(videoRef.current.srcObject, { mimeType: "video/webm" });
+  //   mediaRecorderRef.current = recorder;
+  //   recorder.ondataavailable = (event) => {
+  //     if (event.data.size > 0) {
+  //       setVideoChunks((prev) => [...prev, event.data]);
+  //     }
+  //   };
+  //   recorder.start();
+  //   setIsRecording(true);
+  // };
+
+  // const stopRecording = () => {
+  //   if (!mediaRecorderRef.current) return;
+  //   mediaRecorderRef.current.stop();
+  //   setIsRecording(false);
+  
+  //   mediaRecorderRef.current.onstop = () => {
+  //     const blob = new Blob(videoChunks, { type: "video/webm" });
+  //     const videoURL = URL.createObjectURL(blob);
+  //     setCapturedVideo(videoURL);
+  //     setUploadedVideo(null);
+  //     sendVideoToBackend(blob);
+  //     setVideoChunks([]);
+  //   };
+  // };
 
   const handleVideoUpload = (event) => {
     const file = event.target.files[0];
@@ -180,14 +196,16 @@ const VideoCapture = () => {
           <video ref={videoRef} width="640" height="480" autoPlay muted style={styles.video} />
           <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
         </div>
-        {isRecording ? (
-          <button onClick={stopRecording} style={{ ...styles.button, backgroundColor: "red" }}>
-            Stop Recording
-          </button>
-        ) : (
-          <button onClick={startRecording} style={styles.button}>Start Recording</button>
-        )}
+       
+
       </div>
+      <button onClick={startCamera} style={styles.button}>Start Camera (Real-Time)</button>
+{isCameraOn && (
+  <button onClick={stopRealtime} style={{ ...styles.button, backgroundColor: "#f76c6c" }}>
+    Stop
+  </button>
+)}
+
 
       <div style={styles.section}>
         <h2 style={styles.subtitle}>Or Upload a Video</h2>

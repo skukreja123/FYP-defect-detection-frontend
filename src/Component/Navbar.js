@@ -49,6 +49,7 @@ function Navbar() {
           <li><Link to="/Contact">Contact</Link></li>
           <li><Link to="/upload">Image</Link></li>
           <li><Link to="/Video">Video</Link></li>
+          <li><Link to="/All_frame">Report</Link></li>
         </ul>
         <div className="auth-buttons">
           {!isLoggedIn ? (
@@ -70,6 +71,7 @@ function Navbar() {
           <li><Link to="/Contact" onClick={() => setMenuOpen(false)}>Contact</Link></li>
           <li><Link to="/upload" onClick={() => setMenuOpen(false)}>Image</Link></li>
           <li><Link to="/Video" onClick={() => setMenuOpen(false)}>Video</Link></li>
+          <li><Link to="/All_frame" onClick={() => setMenuOpen(false)}>Report</Link></li>
         </ul>
         <div className="auth-buttons">
           {!isLoggedIn ? (

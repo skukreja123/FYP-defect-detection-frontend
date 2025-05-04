@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import "./UploadImage.css"; // Assuming you have a CSS file for styles
+import ImageViewer from "./ImageView";
 
 const CameraCapture = () => {
   const videoRef = useRef(null);
