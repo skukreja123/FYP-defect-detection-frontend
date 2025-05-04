@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(" https://how-shareware-australian-streams.trycloudflare.com/auth/signup", {
+      const res = await axios.post(" http://localhost:5000/auth/signup", {
         email,
         password
       });

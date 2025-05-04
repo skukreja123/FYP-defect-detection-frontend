@@ -26,9 +26,22 @@ const VideoCapture = () => {
       })
       .catch((err) => {
         console.error("Error accessing the camera", err);
-        alert("Unable to access the camera. Please check permissions.");
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((stream) => {
+            videoRef.current.srcObject = stream;
+            setIsCameraOn(true);
+            setMode("realtime");
+          })
+          .catch((err) => {
+            console.error("Error accessing any camera", err);
+            alert("Unable to access the camera. Please check permissions.");
+          });
       });
   };
+  
+
+  
 
   const captureAndSendFrame = async () => {
     if (!videoRef.current || !canvasRef.current || mode !== "realtime") return;
@@ -43,8 +56,10 @@ const VideoCapture = () => {
       formData.append("frame", blob, "frame.jpg");
 
       try {
-        const response = await axios.post(" https://how-shareware-australian-streams.trycloudflare.com/video/predict_frame", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        const response = await axios.post(" http://localhost:5000/video/predict_frame", formData, {
+          headers: { "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token in the headers
+           },
         });
 
         if (response.data.label) {
@@ -113,8 +128,10 @@ const VideoCapture = () => {
     formData.append("video", videoFile);
 
     axios
-      .post(" https://how-shareware-australian-streams.trycloudflare.com/video/predict_video", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      .post(" http://localhost:5000/video/predict_video", formData, {
+        headers: { "Content-Type": "multipart/form-data" ,
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token in the headers
+         },
       })
       .then((response) => {
         const base64Images = response.data.results || [];
@@ -155,42 +172,7 @@ const VideoCapture = () => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Defect Detection System</h1>
-      
-      <div style={{ marginBottom: "20px" }}>
-  <button
-    onClick={() => {
-      setMode("realtime");
-      setCapturedVideo(null);
-      setUploadedVideo(null);
-      setPredictions([]);
-    }}
-    style={{
-      ...styles.button,
-      backgroundColor: mode === "realtime" ? "#6e8efb" : "#ccc",
-    }}
-  >
-    Real-Time Mode
-  </button>
-  <button
-    onClick={() => {
-      setMode("upload");
-      setIsCameraOn(false);
-      if (videoRef.current?.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-      setCapturedVideo(null);
-      setPredictions([]);
-    }}
-    style={{
-      ...styles.button,
-      backgroundColor: mode === "upload" ? "#6e8efb" : "#ccc",
-    }}
-  >
-    Upload Mode
-  </button>
-</div>
-
+    
 
       <div style={styles.section}>
         <button onClick={startCamera} style={styles.button}>Start Camera (Real-Time)</button>

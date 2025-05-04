@@ -13,21 +13,31 @@ const CameraCapture = () => {
 
 
   const startCamera = () => {
-    // Requesting the back camera using facingMode: "environment"
+    // First try to get the back camera, fallback to default if fails
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          facingMode: { exact: "environment" }, // Request the back camera
+          facingMode: { exact: "environment" }, // Try back camera
         },
       })
       .then((stream) => {
         videoRef.current.srcObject = stream;
       })
       .catch((err) => {
-        console.error("Error accessing the camera", err);
-        alert("Unable to access the camera. Please check permissions.");
+        console.warn("Back camera not found. Falling back to default camera.", err);
+        // Fallback: use any available camera (usually front on laptops)
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((stream) => {
+            videoRef.current.srcObject = stream;
+          })
+          .catch((err) => {
+            console.error("Error accessing any camera", err);
+            alert("Unable to access the camera. Please check permissions.");
+          });
       });
   };
+
 
   const captureImage = () => {
     const canvas = canvasRef.current;
@@ -51,16 +61,23 @@ const CameraCapture = () => {
     }
   };
 
- 
+
 
   const sendImageToBackend = (imageData) => {
     setIsLoading(true);
     setUploadProgress(0);
-  
+
     axios
       .post(
-        " https://how-shareware-australian-streams.trycloudflare.com/image/predict_image",
+        " http://localhost:5000/image/predict_image",
         { image: imageData },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token in the headers
+          },
+          maxContentLength: Infinity,
+        },
         {
           onUploadProgress: (progressEvent) => {
             if (progressEvent.total) {
@@ -82,7 +99,7 @@ const CameraCapture = () => {
         setUploadProgress(0);
       });
   };
-  
+
 
   useEffect(() => {
     return () => {
@@ -96,17 +113,17 @@ const CameraCapture = () => {
     <div style={styles.container}>
       <h1 style={styles.title}>Defect Detection System</h1>
       {isLoading && (
-  <div className="spinner-overlay">
-    <div>
-      <div className="spinner"></div>
-      {uploadProgress > 0 && (
-        <div className="progress-bar">
-          <div className="progress-bar-fill" style={{ width: `${uploadProgress}%` }}></div>
+        <div className="spinner-overlay">
+          <div>
+            <div className="spinner"></div>
+            {uploadProgress > 0 && (
+              <div className="progress-bar">
+                <div className="progress-bar-fill" style={{ width: `${uploadProgress}%` }}></div>
+              </div>
+            )}
+          </div>
         </div>
       )}
-    </div>
-  </div>
-)}
 
       {/* Camera Section */}
       <div style={styles.section}>
@@ -149,14 +166,21 @@ const CameraCapture = () => {
 
           {/* Show model predictions */}
           <div style={styles.predictionCards}>
-            {Object.entries(predictions).map(([modelKey, data]) => (
-              <div key={modelKey} style={styles.card}>
-                <h3>{modelKey}</h3>
-                <p><strong>Defect:</strong> {data.label}</p>
-                <p><strong>Confidence:</strong> {data.confidence.toFixed(2)}</p>
-              </div>
-            ))}
-          </div>
+  {Object.entries(predictions).map(([modelKey, data]) => {
+    if (!data) return null; // <-- Skip if data is null
+
+    return (
+      <div key={modelKey} style={styles.card}>
+        <h3>{modelKey}</h3>
+        <p><strong>Defect:</strong> {data.label}</p>
+        <p><strong>Confidence:</strong> {(data.confidence * 100).toFixed(2)}%</p>
+      </div>
+    );
+  })}
+</div>
+
+
+
         </div>
       )}
     </div>
@@ -244,21 +268,47 @@ const styles = {
     borderRadius: "10px",
     marginBottom: "20px",
   },
+ 
   predictionCards: {
-    display: "flex",
-    justifyContent: "center",
-    gap: "20px",
-    flexWrap: "wrap",
-  },
-  card: {
-    backgroundColor: "#f1f3f5",
-    padding: "15px",
-    borderRadius: "8px",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-    minWidth: "180px",
-    maxWidth: "300px",
-    textAlign: "left",
-    flex: "1 1 200px",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "24px",
+    padding: "30px",
+    background: "linear-gradient(145deg, #e0eaff, #f3f8ff)",
+    borderRadius: "20px",
+    boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.4)",
   },
   
+  card: {
+    backdropFilter: "blur(10px)",
+    background: "rgba(255, 255, 255, 0.15)",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
+    borderRadius: "20px",
+    padding: "20px",
+    color: "#333",
+    boxShadow: "0 8px 32px rgba(31, 38, 135, 0.1)",
+    transition: "all 0.3s ease-in-out",
+    transform: "scale(1)",
+    textAlign: "center",
+    cursor: "pointer",
+  },
+  
+  cardTitle: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    color: "#0077ff",
+    marginBottom: "12px",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+  },
+  
+  // Add this logic in a useEffect or inject via styled-components if needed
+  cardHover: {
+    transform: "scale(1.03)",
+    boxShadow: "0 12px 24px rgba(0, 0, 0, 0.2)",
+  }
+  
+
+
+
 };

@@ -24,7 +24,15 @@ const ContactUs = () => {
     setStatus('Sending...');
 
     try {
-      const response = await axios.post('https://your-api-endpoint.com/contact', form);
+      console.log('Form data:', form); // Log the form data to check its structure
+      const response = await axios.post('http://localhost:5000/contact/contact', form
+, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}` // Include the token in the headers
+        }
+      }
+      );
       setStatus('Message sent successfully!');
       setForm({ name: '', email: '', message: '' });
     } catch (error) {

@@ -10,12 +10,13 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(" https://how-shareware-australian-streams.trycloudflare.com/auth/signin", {
+      const res = await axios.post(" http://localhost:5000/auth/signin", {
         email,
         password
       });
 
       const token = res.data.token;
+      console.log("Token:", token);
       localStorage.setItem("token", token);
       alert("Logged in successfully!");
       // Optionally navigate or change UI state
