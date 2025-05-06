@@ -9,7 +9,7 @@ const ImageViewer = ({ frameId }) => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/image/${frameId}`);
+        const response = await axios.get(`https://appreciate-object-script-leader.trycloudflare.com/image/${frameId}`);
         console.log(response);
         setImageSrc(response.data.image_base64);
         console.log(response.data);

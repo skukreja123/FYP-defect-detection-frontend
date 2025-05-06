@@ -9,7 +9,7 @@ const AllFramesPage = () => {
     const fetchFrames = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/image/All_frame', {
+        const response = await axios.get('https://appreciate-object-script-leader.trycloudflare.com/image/All_frame', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -28,7 +28,7 @@ const AllFramesPage = () => {
   const handleDelete = async (frameId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/image/delete_frame/${frameId}`, {
+      await axios.delete(`https://appreciate-object-script-leader.trycloudflare.com/image/delete_frame/${frameId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

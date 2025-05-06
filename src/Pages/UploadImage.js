@@ -70,7 +70,7 @@ const CameraCapture = () => {
 
     axios
       .post(
-        " http://localhost:5000/image/predict_image",
+        " https://appreciate-object-script-leader.trycloudflare.com/image/predict_image",
         { image: imageData },
         {
           headers: {
