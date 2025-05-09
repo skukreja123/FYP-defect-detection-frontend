@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(" https://appreciate-object-script-leader.trycloudflare.com/auth/signup", {
+      const res = await axios.post(" http://127.0.0.1:5000/auth/signup", {
         email,
         password
       });

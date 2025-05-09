@@ -1,11 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
+import icon from "../images/images.png"
+
 
 const teamMembers = [
-  { name: "Ayaan Patel", role: "ML Developer", image: "/team/ayaan.jpg" },
-  { name: "Zara Khan", role: "UI/UX Designer", image: "/team/zara.jpg" },
-  { name: "Ravi Sharma", role: "Backend Engineer", image: "/team/ravi.jpg" },
-  { name: "Emma Li", role: "Data Scientist", image: "/team/emma.jpg" },
+  { name: "Sahil Kukreja - 21K-4696", role: "ML/Software Developer", image: icon },
+  { name: "Mustafa Hashmani - 21K-3080", role: "ML Engineer", image:icon },
+  { name: "Areeb Nadeem - 21K-3007", role: "ML Engineer", image: icon },
 ];
 
 const AboutSection = () => {
