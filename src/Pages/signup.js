@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(" http://127.0.0.1:5000/auth/signup", {
+      const res = await axios.post(" https://sq-mike-lesser-institute.trycloudflare.com/auth/signup", {
         email,
         password
       });

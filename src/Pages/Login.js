@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://127.0.0.1:5000/auth/signin", {
+      const res = await axios.post("https://sq-mike-lesser-institute.trycloudflare.com/auth/signin", {
         email,
         password
       });

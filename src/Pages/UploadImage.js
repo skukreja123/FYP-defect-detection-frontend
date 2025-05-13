@@ -70,7 +70,7 @@ const CameraCapture = () => {
 
     axios
       .post(
-        " http://127.0.0.1:5000/image/predict_image",
+        " https://sq-mike-lesser-institute.trycloudflare.com/image/predict_image",
         { image: imageData },
         {
           headers: {

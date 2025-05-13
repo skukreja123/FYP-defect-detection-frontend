@@ -9,7 +9,7 @@ const ImageViewer = ({ frameId }) => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/image/${frameId}`);
+        const response = await axios.get(`https://sq-mike-lesser-institute.trycloudflare.com/image/${frameId}`);
         console.log(response);
         setImageSrc(response.data.image_base64);
         console.log(response.data);
