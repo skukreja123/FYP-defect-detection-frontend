@@ -71,7 +71,7 @@ const VideoCapture = () => {
       formData.append("frame", blob, "frame.jpg");
   
       try {
-        const response = await axios.post("https://sq-mike-lesser-institute.trycloudflare.com/video/predict_frame", formData, {
+        const response = await axios.post(" https://enables-possibility-wn-downloaded.trycloudflare.com/video/predict_frame", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -144,7 +144,7 @@ const VideoCapture = () => {
     formData.append("video", videoFile);
 
     axios
-      .post(" https://sq-mike-lesser-institute.trycloudflare.com/video/predict_video", formData, {
+      .post("  https://enables-possibility-wn-downloaded.trycloudflare.com/video/predict_video", formData, {
         headers: { "Content-Type": "multipart/form-data" ,
         Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token in the headers
          },

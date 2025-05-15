@@ -25,7 +25,7 @@ const ContactUs =  () => {
 
     try {
       console.log('Form data:', form); // Log the form data to check its structure
-      const response = await axios.post('https://sq-mike-lesser-institute.trycloudflare.com/contact/contact', form
+      const response = await axios.post(' https://enables-possibility-wn-downloaded.trycloudflare.com/contact/contact', form
 , {
         headers: {
           'Content-Type': 'application/json',
