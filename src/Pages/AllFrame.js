@@ -9,7 +9,7 @@ const AllFramesPage = () => {
     const fetchFrames = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(' https://enables-possibility-wn-downloaded.trycloudflare.com/image/All_frame', {
+        const response = await axios.get('https://along-table-appearing-panels.trycloudflare.com/image/All_frame', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -28,7 +28,7 @@ const AllFramesPage = () => {
   const handleDelete = async (frameId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(` https://enables-possibility-wn-downloaded.trycloudflare.com/image/delete_frame/${frameId}`, {
+      await axios.delete(`https://along-table-appearing-panels.trycloudflare.com/image/delete_frame/${frameId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

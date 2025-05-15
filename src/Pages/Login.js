@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(" https://enables-possibility-wn-downloaded.trycloudflare.com/auth/signin", {
+      const res = await axios.post("https://along-table-appearing-panels.trycloudflare.com/auth/signin", {
         email,
         password
       });

@@ -70,7 +70,7 @@ const CameraCapture = () => {
 
     axios
       .post(
-        "  https://enables-possibility-wn-downloaded.trycloudflare.com/image/predict_image",
+        " https://along-table-appearing-panels.trycloudflare.com/image/predict_image",
         { image: imageData },
         {
           headers: {

@@ -17,7 +17,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post("  https://enables-possibility-wn-downloaded.trycloudflare.com/auth/signup", {
+      const res = await axios.post(" https://along-table-appearing-panels.trycloudflare.com/auth/signup", {
         email,
         password
       });
