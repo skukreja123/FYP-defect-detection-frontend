@@ -21,18 +21,18 @@ This is the **frontend** of a Final Year Project focused on **automated fabric d
 ## 📂 Project Structure
 
 FYP-defect-detection-frontend/
-├── public/
-│ └── index.html
-├── src/
-│ ├── components/
-│ │ ├── Upload.js # Image upload and API integration
-│ │ ├── Result.js # Displays detection results
-│ │ └── Navbar.js # App navbar
-│ ├── App.js # Routing setup
-│ ├── index.js # Entry point
-│ └── App.css # Global styles
-├── package.json
-└── README.md
+  ├──   public/
+  │   └──   index.html
+  ├──   src/
+  │   ├──   components/
+  │ │   ├──   Upload.js # Image upload and API integration
+  │ │   ├──   Result.js # Displays detection results
+  │ │   └──   Navbar.js # App navbar
+  │   ├──   App.js # Routing setup
+  │   ├──   index.js # Entry point
+  │   └──   App.css # Global styles
+  ├── package.json
+  └── README.md
 
 
 
