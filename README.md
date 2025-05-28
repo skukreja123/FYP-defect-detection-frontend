@@ -47,14 +47,13 @@ FYP-defect-detection-frontend/
 
 ### 🔧 Installation
 
-```bash
+bash
 git clone https://github.com/skukreja123/FYP-defect-detection-frontend.git
 cd FYP-defect-detection-frontend
 npm install
 npm start
 
-
-````Layer	Tech
+Layer	Tech
   Frontend	= React (Create React App)
   State	 = useState / useEffect
   Routing	 = React Router DOM
