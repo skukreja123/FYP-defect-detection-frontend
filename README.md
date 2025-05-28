@@ -71,8 +71,21 @@ Screenshots
 🔗 App.js
   Manages routing between Upload and Result pages
 
-🙌 Acknowledgements
-Developed by Sahil Kukreja, Areeb, Mustafa
+---
+
+## 🤝 Contributors
+
+  Sahil Kukreja – Developer, Model Trainer, Backend Engineer
+   [GitHub Profile](https://github.com/skukreja123)
+
+Areeb – Developer, Model Trainer, Backend Engineer
+ [GitHub Profile](https://github.com/areebbinnadeem)
+
+Mustafa – Developer, Model Trainer, Backend Engineer
+[GitHub Profile](https://github.com/MustafaHashmani)
+ 
+
+---
 
 Final Year Project @ FAST NUCES, Karachi
 
