@@ -68,17 +68,24 @@ Screenshots
 
 🧠 Code Highlights
 📤 Upload.js
-Handles file selection and preview
-
-Submits to backend using Axios
-
-Redirects to /result upon success
+  Handles file selection and preview
+  
+  Submits to backend using Axios
+  
+  Redirects to /result upon success
 
 📊 Result.js
-Fetches prediction results from localStorage
-
-Renders the output image and defect insights
+  Fetches prediction results from localStorage
+  
+  Renders the output image and defect insights
 
 🔗 App.js
-Manages routing between Upload and Result pages
+  Manages routing between Upload and Result pages
+
+🙌 Acknowledgements
+Developed by Sahil Kukreja, Areeb, Mustafa
+
+Final Year Project @ FAST NUCES, Karachi
+
+Backend powered by Flask [backend repo](https://github.com/skukreja123/FYP-defect-dection-backend)
 
